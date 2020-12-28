@@ -1,0 +1,2 @@
+﻿İşlem Kodu : Tanımlaması
+1 - Sistem Veri Tabanı Dosyasını Belirtilen Konumda Bulamıyor

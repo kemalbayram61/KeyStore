@@ -18,5 +18,7 @@ namespace KeyStore.Entities
         public string sent_date = null;
 
         public int key_seccurity_degree=-1;
+
+        public byte[] key_value;
     }
 }

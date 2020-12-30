@@ -8,17 +8,76 @@ using System.Web;
 
 namespace KeyStore.DataAccess
 {
+    [Serializable]
     public class AuthorityDataAccess : IAuthorityDataAccess
     {
-        private string authority_db_path = @"Database\\DBAuthority.txt";
+        private string authority_db_path = @"C:\\Users\\kemal\\Documents\\GitHub\\KeyStore\\KeyStore\\KeyStore\\DataAccess\\Database\\DBAuthority.txt";
         public Authority AddAuthority(Authority authority)
         {
-            throw new NotImplementedException();
+            List<Authority> authority_list = GetAllAuthority();
+            if (authority_list != null)
+            {
+                foreach (Authority element in authority_list)
+                {
+                    if (element.id == authority.id)
+                    {
+                        return new Authority();
+                    }
+                }
+            }
+
+            if (File.Exists(authority_db_path))
+            {
+                File.Delete(authority_db_path);
+            }
+
+            if (!File.Exists(authority_db_path))
+            {
+                using (StreamWriter sw = File.CreateText(authority_db_path))
+                {
+                    if (authority_list != null)
+                    {
+                        foreach (Authority element in authority_list)
+                        {
+                            sw.WriteLine(element.id.ToString() + ";" + element.authority_type);
+                        }
+                    }
+
+                    sw.WriteLine(authority.id.ToString() + ";" + authority.authority_type);
+                }
+            }
+            else
+            {
+                return new Authority();
+            }
+            return authority;
         }
 
         public bool DeleteAuthority(int authority_id)
         {
-            throw new NotImplementedException();
+            bool is_element_find = false;
+
+            List<Authority> authority_list = GetAllAuthority();
+            if (File.Exists(authority_db_path))
+            {
+                File.Delete(authority_db_path);
+            }
+            using (StreamWriter sw = File.CreateText(authority_db_path))
+            {
+                foreach (Authority element in authority_list)
+                {
+                    if (element.id != authority_id)
+                    {
+                        sw.WriteLine(element.id + ";" + element.authority_type);
+                    }
+                    else
+                    {
+                        is_element_find = true;
+                    }
+                }
+            }
+
+            return is_element_find;
         }
 
         public List<Authority> GetAllAuthority()
@@ -26,14 +85,18 @@ namespace KeyStore.DataAccess
             List<Authority> authority_list = new List<Authority>();
             if (File.Exists(authority_db_path))
             {
-                string[] authority_lines = File.ReadAllLines(authority_db_path);
-                for(int i = 0; i < authority_lines.Length; i++)
+                using(StreamReader sr = File.OpenText(authority_db_path))
                 {
-                    string[] line_elements = authority_lines[i].Split(';');
-                    Authority authority = new Authority();
-                    authority.id = Convert.ToInt32(line_elements[0]);
-                    authority.authority_type = line_elements[1];
-                    authority_list.Add(authority);
+                    string line = "";
+                    string[] line_element;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        line_element = line.Split(';');
+                        Authority authority = new Authority();
+                        authority.id = Convert.ToInt32(line_element[0]);
+                        authority.authority_type = line_element[1];
+                        authority_list.Add(authority);
+                    }
                 }
                 return authority_list;
             }
@@ -49,14 +112,14 @@ namespace KeyStore.DataAccess
             List<Authority> authority_list = GetAllAuthority();
             if (authority_list != null)
             {
-                if (authority_list.Count > 0)
+                if (authority_list!=null)
                 {
-                    for(int i = 0; i < authority_list.Count; i++)
+                    foreach (Authority element in authority_list)
                     {
-                        if (authority_list[i].id == authority_id)
+                        if (element.id == authority_id)
                         {
                             authority.id = authority_id;
-                            authority.authority_type = authority_list[i].authority_type;
+                            authority.authority_type = element.authority_type;
                             return authority;
                         }
                     }
@@ -71,7 +134,12 @@ namespace KeyStore.DataAccess
 
         public Authority UpdateAuthority(Authority authority)
         {
-            throw new NotImplementedException();
+            if (DeleteAuthority(authority.id) == true)
+            {
+                AddAuthority(authority);
+                return authority;
+            }
+            return new Authority();
         }
     }
 }

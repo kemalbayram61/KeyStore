@@ -1,0 +1,2 @@
+﻿1;static
+2;dynamic

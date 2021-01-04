@@ -11,7 +11,7 @@ namespace KeyStore.Abstract
     {
         Authority AddAuthority(Authority authority);
         Authority GetAuthorityById(int authority_id);
-        List<Authority> GetAllAuthority();
+        List<PackageObject> GetAllAuthority();
         Authority UpdateAuthority(Authority authority);
         bool DeleteAuthority(int authority_id);
 

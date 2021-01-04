@@ -5,10 +5,10 @@ using System.Web;
 
 namespace KeyStore.Entities
 {
-    public class SecurityDegree
+    public class SecurityDegree : PackageObject
     {
         public int id=-1;
 
-        public string degree_name = null;
+        public string degree_name = "..";
     }
 }

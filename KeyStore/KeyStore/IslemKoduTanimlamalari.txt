@@ -1,2 +1,24 @@
-﻿İşlem Kodu : Tanımlaması
-1 - Sistem Veri Tabanı Dosyasını Belirtilen Konumda Bulamıyor
+﻿Kodu :		Tanımlaması
+--------------------------------------------------------------------------
+1	-	İşlem Başarılı
+2	-	Sistem Veri Tabanı Dosyasını Belirtilen Konumda Bulamıyor
+3	-	Güncellenmek istenen nesne veri tabanında yer almıyor
+4	-	Silinmek istenen nesne veri tabanında yer almıyor 
+5	-	Belirtilen id veri tabanındaki hiçbir nesne ile eşleşmiyor
+6	-	Veri tabanında hiç nesne yok
+7	-	Belirtilen güvenlik derecesi veri tabanında yer almıyor 
+8	-	Belirtilen yetki veri tabanında yer almıyor
+9	-	Mac adresi ait olduğu kullanıcı daha önce silinmiş 
+10	-	Kullanıcıya ait resim daha önce veri tabanına eklenmemiş
+11	-	Kullanıcı kayıtlı değil
+12	-	Kullanıcı zaten kayıtlı
+13	-	Token veri tabanında yok(aktif olmamış kullanıcı)
+14	-	Yetkisiz işlem talebi(Authority derecesine göre)
+15	-	Alıcı mac adresi sistemde hiçbir kullanıcıya atanmamış
+16	-	Süre kısıtını aştınız
+17	-	Fazla şifre talebi
+18	-	Kullanıcı bilgileri yanlış
+19	-	Kullanıcı adı ile parola aynı olamaz
+20	-	Id veritabanındaki başka bir Id ile çakışıyor
+21	-	Belirtilen token veri tabanında yer almıyor
+22	-	Veritabanında boş anahtar yer almamaktadır

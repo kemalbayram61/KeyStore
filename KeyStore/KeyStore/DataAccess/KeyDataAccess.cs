@@ -11,15 +11,16 @@ namespace KeyStore.DataAccess
     [Serializable]
     public class KeyDataAccess : IKeyDataAccess
     {
-        private string key_db_path = @"C:\\Users\\kemal\\Documents\\GitHub\\KeyStore\\KeyStore\\KeyStore\\DataAccess\\Database\\DBKey.txt";
+        private string key_db_path = @"C:\\Users\\mhd\\Downloads\\KeyStore-master\\KeyStore-master\\KeyStore\\DataAccess\\Database\\DBKey.txt";
 
         private string KeyArrayToString(byte[] key_array)
         {
             string result = "";
-            for(int i = 0; i < key_array.Length; i++)
+            for (int i = 0; i < key_array.Length-1; i++)
             {
                 result = result + key_array[i].ToString() + ":";
             }
+            result = result + key_array[key_array.Length - 1].ToString();
             return result;
         }
 
@@ -27,15 +28,30 @@ namespace KeyStore.DataAccess
         {
             string[] values = key_string.Split(':');
             byte[] key_value = new byte[values.Length];
-            for(int i = 0; i < key_value.Length; i++)
+            for (int i = 0; i < values.Length; i++)
             {
                 key_value[i] = (byte)Convert.ToInt32(values[i]);
             }
             return key_value;
         }
+
+        public int GetLastId()
+        {
+            int max_id = -1;
+            List<PackageObject> key_list = GetAllKey();
+            if (key_list != null)
+            {
+                foreach(Key element in key_list)
+                {
+                    if (max_id < element.id) max_id = element.id;
+                }
+            }
+            return max_id;
+        }
+
         public Key AddKey(Key key)
         {
-            List<Key> key_list = GetAllKey();
+            List<PackageObject> key_list = GetAllKey();
             if (key_list != null)
             {
                 foreach (Key element in key_list)
@@ -77,7 +93,7 @@ namespace KeyStore.DataAccess
         {
             bool is_element_find = false;
 
-            List<Key> keyy_list = GetAllKey();
+            List<PackageObject> keyy_list = GetAllKey();
             if (File.Exists(key_db_path))
             {
                 File.Delete(key_db_path);
@@ -100,9 +116,9 @@ namespace KeyStore.DataAccess
             return is_element_find;
         }
 
-        public List<Key> GetAllKey()
+        public List<PackageObject> GetAllKey()
         {
-            List<Key> key_list = new List<Key>();
+            List<PackageObject> key_list = new List<PackageObject>();
             if (File.Exists(key_db_path))
             {
                 using (StreamReader sr = File.OpenText(key_db_path))
@@ -118,7 +134,7 @@ namespace KeyStore.DataAccess
                         key.sent_mac_address = line_element[2];
                         key.get_date = line_element[3];
                         key.sent_date = line_element[4];
-                        key.key_value = StringToKeyArray(line_element[5]);
+                        key.key_value = StringToKeyArray(line_element[6]);
                         key.key_seccurity_degree = Convert.ToInt32(line_element[5]);
                         key_list.Add(key);
                     }
@@ -131,10 +147,29 @@ namespace KeyStore.DataAccess
             }
         }
 
+        public Key GetKey()
+        {
+            List<PackageObject> key_list = GetAllKey();
+
+            if (key_list != null)
+            {
+                foreach (Key element in key_list)
+                {
+                    if(element.sent_date=="..") return element;
+                }
+                return new Key();
+            }
+            else
+            {
+                return new Key() ;
+            }
+
+        }
+
         public Key GetKeyById(int key_id)
         {
             Key key = new Key();
-            List<Key> key_list = GetAllKey();
+            List<PackageObject> key_list = GetAllKey();
             if (key_list != null)
             {
                 if (key_list != null)

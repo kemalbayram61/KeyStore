@@ -10,7 +10,7 @@ namespace KeyStore.Abstract
     interface IKeyDataAccess
     {
         Key AddKey(Key key);
-        List<Key> GetAllKey();
+        List<PackageObject> GetAllKey();
         Key GetKeyById(int key_id);
         bool DeleteKey(int key_id);
         Key UpdateKey(Key key);

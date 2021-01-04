@@ -5,7 +5,7 @@ using System.Web;
 
 namespace KeyStore.Entities
 {
-    public class Authority
+    public class Authority : PackageObject
     {
         public int id = -1;
 

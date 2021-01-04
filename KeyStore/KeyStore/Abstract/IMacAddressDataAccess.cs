@@ -11,7 +11,7 @@ namespace KeyStore.Abstract
     {
         MacAddress AddMacAddress(MacAddress mac_address);
         MacAddress GetMacAddressById(int mac_address_id);
-        List<MacAddress> GetAllMacAddress();
+        List<PackageObject> GetAllMacAddress();
         MacAddress UpdateMacAddress(MacAddress mac_address);
         bool DeleteMacAddress(int mac_address_id);
     }

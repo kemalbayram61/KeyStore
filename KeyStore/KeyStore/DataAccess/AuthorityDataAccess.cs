@@ -11,10 +11,10 @@ namespace KeyStore.DataAccess
     [Serializable]
     public class AuthorityDataAccess : IAuthorityDataAccess
     {
-        private string authority_db_path = @"C:\\Users\\kemal\\Documents\\GitHub\\KeyStore\\KeyStore\\KeyStore\\DataAccess\\Database\\DBAuthority.txt";
+        private string authority_db_path = @"C:\\Users\\mhd\\Downloads\\KeyStore-master\\KeyStore-master\\KeyStore\\DataAccess\\Database\\DBAuthority.txt";
         public Authority AddAuthority(Authority authority)
         {
-            List<Authority> authority_list = GetAllAuthority();
+            List<PackageObject> authority_list = GetAllAuthority();
             if (authority_list != null)
             {
                 foreach (Authority element in authority_list)
@@ -57,7 +57,7 @@ namespace KeyStore.DataAccess
         {
             bool is_element_find = false;
 
-            List<Authority> authority_list = GetAllAuthority();
+            List<PackageObject> authority_list = GetAllAuthority();
             if (File.Exists(authority_db_path))
             {
                 File.Delete(authority_db_path);
@@ -80,9 +80,9 @@ namespace KeyStore.DataAccess
             return is_element_find;
         }
 
-        public List<Authority> GetAllAuthority()
+        public List<PackageObject> GetAllAuthority()
         {
-            List<Authority> authority_list = new List<Authority>();
+            List<PackageObject> authority_list = new List<PackageObject>();
             if (File.Exists(authority_db_path))
             {
                 using(StreamReader sr = File.OpenText(authority_db_path))
@@ -109,7 +109,7 @@ namespace KeyStore.DataAccess
         public Authority GetAuthorityById(int authority_id)
         {
             Authority authority = new Authority();
-            List<Authority> authority_list = GetAllAuthority();
+            List<PackageObject> authority_list = GetAllAuthority();
             if (authority_list != null)
             {
                 if (authority_list!=null)

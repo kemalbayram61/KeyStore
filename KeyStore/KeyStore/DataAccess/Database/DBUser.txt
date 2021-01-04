@@ -1,0 +1,4 @@
+2;mehmet;delipalta;1234;2;0
+4;zeliha;aydogan;1234;2;-1
+3;volkan;ünlü;1234;2;-1
+1;kemal;bayram;1234;2;-1

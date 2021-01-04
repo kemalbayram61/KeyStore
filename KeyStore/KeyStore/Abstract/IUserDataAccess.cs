@@ -10,7 +10,7 @@ namespace KeyStore.Abstract
     interface IUserDataAccess
     {
         User AddUser(User user);
-        List<User> GetAllUser();
+        List<PackageObject> GetAllUser();
         User GetUserById(int user_id);
         bool DeleteUser(int user_id);
         User UpdateUser(User user);

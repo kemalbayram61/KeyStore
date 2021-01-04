@@ -11,7 +11,7 @@ namespace KeyStore.DataAccess
     [Serializable]
     public class SecurtyDegreeDataAccess : ISecurityDegreeDataAccess
     {
-        private string security_degree_db_path = @"C:\\Users\\Melih\\Desktop\\KeyStore-master\\KeyStore\\KeyStore\\DataAccess\\Database\\DBSecurityDegree.txt";
+        private string security_degree_db_path = @"C:\\Users\\mhd\\Downloads\\KeyStore-master\\KeyStore-master\\KeyStore\\DataAccess\\Database\\DBSecurityDegree.txt";
 
         public SecurityDegree AddSecurityDegree(SecurityDegree security_degree)
         {

@@ -25,10 +25,11 @@ namespace KeyStore
         ConverterClass cc = new ConverterClass();
         UserDataAccess uda = new UserDataAccess();
         MacAddressDataAccess mda = new MacAddressDataAccess();
+        ImageDataAccess ida = new ImageDataAccess();
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public void GetAllAuthory(int token)
+        public void GetAllAuthority(int token)
         {
             JavaScriptSerializer js = new JavaScriptSerializer();
             Context.Response.Clear();
@@ -259,7 +260,7 @@ namespace KeyStore
                     {
                         package.process_code = 3;
                     }
-                    
+
                 }
                 else
                 {
@@ -336,7 +337,7 @@ namespace KeyStore
                 key.key_value = key_array;
                 key.key_seccurity_degree = 2;
 
-                if (kda.AddKey(key).id != -1 )
+                if (kda.AddKey(key).id != -1)
                 {
                     key = kda.GetKeyById(key.id);
                     key.sent_date = date;
@@ -369,31 +370,73 @@ namespace KeyStore
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public void UpdateKey(int key_id, string creators_mac_address, string sent_mac_address, string get_date, string sent_date, int key_seccurity_degree, string key_value)
+        public void PostImage(int token, string image_values)
         {
             JavaScriptSerializer js = new JavaScriptSerializer();
             Context.Response.Clear();
             Context.Response.ContentType = "application/json";
 
-            Key key = new Key();
-            byte[] key_value_array = kda.StringToKeyArray(key_value);
-            if (key_value != null)
+            Package package = new Package();
+            User user = uda.GetUserByToken(token);
+            package.user_token = token;
+            Imagee image = new Imagee();
+            if (user.id != -1)
             {
-                byte[] random_array = cc.GetRandomByteArray();
-                key_value_array = cc.XORArrays(key_value_array, random_array);
+                image.user_id = user.id;
+                int max_id = ida.GetLastId();
+                image.id = max_id + 1;
+                image.image_values = ida.StringToByteArray(image_values);
+                if (ida.AddImage(image).id != -1)
+                {
+                    package.process_code = 1;
+                    package.package_object = image;
+                }
+                else
+                {
+                    package.process_code = 20;
+                }
+            }
+            else
+            {
+                package.process_code = 13;
             }
 
-            key.id = key_id;
-            key.creators_mac_address = creators_mac_address;
-            key.sent_mac_address = sent_mac_address;
-            key.get_date = get_date;
-            key.sent_date = sent_date;
-            key.key_seccurity_degree = key_seccurity_degree;
-            key.key_value = key_value_array;
-            kda.UpdateKey(key);
+            Context.Response.Write(js.Serialize(package));
+        }
 
-            Context.Response.Write(js.Serialize(key));
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public void GetAllImage(int token)
+        {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            Context.Response.Clear();
+            Context.Response.ContentType = "application/json";
+
+            Package package = new Package();
+            User user = uda.GetUserByToken(token);
+            package.user_token = token;
+            List<PackageObject> image_list = ida.GetAllImage();
+            if (user.id != -1)
+            {
+                if (image_list != null)
+                {
+                    package.process_code = 1;
+                    package.package_object_list = image_list;
+                }
+                else
+                {
+                    package.process_code = 6;
+                }
+            }
+            else
+            {
+                package.process_code = 13;
+            }
+
+            Context.Response.Write(js.Serialize(package));
         }
 
     }
+
 }
+

@@ -11,7 +11,7 @@ namespace KeyStore.Abstract
     interface IImageDataAccess
     {
         Imagee AddImage(Imagee image);
-        List<Imagee> GetAllImage();
+        List<PackageObject> GetAllImage();
         Imagee GetImageById(int image_id);
         bool DeleteImage(int image_id);
         Imagee UpdateImage(Imagee image);

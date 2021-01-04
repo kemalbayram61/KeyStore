@@ -11,20 +11,45 @@ namespace KeyStore.DataAccess
     [Serializable]
     public class ImageDataAccess : IImageDataAccess
     {
-        private string image_db_path = @"C:\\Users\\Melih\\Desktop\\KeyStore-master\\KeyStore\\KeyStore\\DataAccess\\Database\\DBImage.txt";
+        private string image_db_path = @"C:\\Users\\mhd\\Downloads\\KeyStore-master\\KeyStore-master\\KeyStore\\DataAccess\\Database\\DBImage.txt";
 
         public string ByteArrayToString(byte[,] image_array)
         {
             string result = "";
-            for(int i = 0; i < image_array.GetLength(0); i++)
+            int i, j;
+            for( i = 0; i < image_array.GetLength(0)-1; i++)
             {
-                for(int j = 0; j < image_array.GetLength(1); j++)
+                for( j = 0; j < image_array.GetLength(1)-1; j++)
                 {
-                    result = result + ":" + image_array[i, j];
+                    result = result + image_array[i, j] + ":";
                 }
+                result = result + image_array[i, j];
                 result = result + ",";
             }
+            for (i = 0; i < image_array.GetLength(1)-1; i++)
+            {
+                result = result + image_array[image_array.GetLength(0) - 1, i] + ":";
+            }
+            result = result + image_array[image_array.GetLength(0) - 1, i];
             return result;
+        }
+
+        public int GetLastId()
+        {
+            int max_id = -1;
+            List<PackageObject> image_list = GetAllImage();
+            if (image_list != null)
+            {
+                foreach(Imagee element in image_list)
+                {
+                    if (max_id < element.id) max_id = element.id;
+                }
+                return max_id;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public byte[,] StringToByteArray(string image_string)
@@ -49,7 +74,7 @@ namespace KeyStore.DataAccess
 
         public Imagee AddImage(Imagee image)
         {
-            List<Imagee> image_list = GetAllImage();
+            List<PackageObject> image_list = GetAllImage();
             if (image_list != null)
             {
                 foreach (Imagee element in image_list)
@@ -92,7 +117,7 @@ namespace KeyStore.DataAccess
         {
             bool is_element_find = false;
 
-            List<Imagee> image_list = GetAllImage();
+            List<PackageObject> image_list = GetAllImage();
             if (File.Exists(image_db_path))
             {
                 File.Delete(image_db_path);
@@ -115,9 +140,9 @@ namespace KeyStore.DataAccess
             return is_element_find;
         }
 
-        public List<Imagee> GetAllImage()
+        public List<PackageObject> GetAllImage()
         {
-            List<Imagee> image_list = new List<Imagee>();
+            List<PackageObject> image_list = new List<PackageObject>();
             if (File.Exists(image_db_path))
             {
                 using (StreamReader sr = File.OpenText(image_db_path))
@@ -145,7 +170,7 @@ namespace KeyStore.DataAccess
         public Imagee GetImageById(int image_id)
         {
             Imagee image = new Imagee();
-            List<Imagee> image_list = GetAllImage();
+            List<PackageObject> image_list = GetAllImage();
             if (image_list != null)
             {
                 if (image_list != null)
